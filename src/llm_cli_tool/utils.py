@@ -17,3 +17,4 @@ def format_cost(cost: float) -> str:
     if cost < 0.001:
         return f"${cost:.6f}"
     return f"${cost:.4f}"
+

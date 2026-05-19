@@ -4,12 +4,22 @@ The tool accepts a prompt as a CLI argument and streams the response back to you
 
 ## Setup
 
-Create and activate a virtual environment, then install the required libraries:
+Create a virtual environment:
 
 ```sh
 python3 -m venv venv
+```
+
+Activate it:
+
+```sh
 source venv/bin/activate
-pip install openai anthropic python-dotenv click tiktoken tenacity
+```
+
+Install the project in editable mode:
+
+```sh
+pip install -e .
 ```
 
 ## Run And Test
@@ -17,23 +27,31 @@ pip install openai anthropic python-dotenv click tiktoken tenacity
 Basic call with streaming:
 
 ```sh
-python cli.py "What is tokenization?"
+llm-cli "What is tokenization?"
 ```
 
 Try a different model:
 
 ```sh
-python cli.py --model gpt-4o "Explain attention mechanisms"
+llm-cli --model gpt-4o "Explain attention mechanisms"
 ```
 
 Disable streaming and get the full response at once:
 
 ```sh
-python cli.py --no-stream "List 3 LLM concepts"
+llm-cli --no-stream "List 3 LLM concepts"
 ```
 
 Get metrics as JSON:
 
 ```sh
-python cli.py --json-output "Explain RAG in one sentence"
+llm-cli --json-output "Explain RAG in one sentence"
+```
+
+You can also run the package directly with `python -m llm_cli_tool`.
+
+Deactivate the virtual environment when you are done:
+
+```sh
+deactivate
 ```
