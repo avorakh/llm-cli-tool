@@ -48,6 +48,17 @@ Get metrics as JSON:
 llm-cli --json-output "Explain RAG in one sentence"
 ```
 
+Start an interactive chat session and keep previous turns in context:
+
+```sh
+llm-cli --chat
+> explain tokenization
+...
+> give me a Python example
+...
+> /exit
+```
+
 You can also run the package directly with `python -m llm_cli_tool`.
 
 Deactivate the virtual environment when you are done:

@@ -28,8 +28,20 @@ class LLMClient:
         )
 
     def stream(self, prompt: str, temperature: float = 0.7, max_tokens: int = 2_000) -> Generator[str, None, None]:
-        response = self._call(
+        return self.stream_messages(
             [{"role": "user", "content": prompt}],
+            temperature=temperature,
+            max_tokens=max_tokens,
+        )
+
+    def stream_messages(
+        self,
+        messages: list[dict],
+        temperature: float = 0.7,
+        max_tokens: int = 2_000,
+    ) -> Generator[str, None, None]:
+        response = self._call(
+            messages,
             stream=True,
             temperature=temperature,
             max_tokens=max_tokens,
@@ -39,12 +51,23 @@ class LLMClient:
                 yield chunk.choices[0].delta.content
 
     def complete(self, prompt: str, temperature: float = 0.7, max_tokens: int = 2_000) -> tuple[str, int, int]:
-        response = self._call(
+        return self.complete_messages(
             [{"role": "user", "content": prompt}],
+            temperature=temperature,
+            max_tokens=max_tokens,
+        )
+
+    def complete_messages(
+        self,
+        messages: list[dict],
+        temperature: float = 0.7,
+        max_tokens: int = 2_000,
+    ) -> tuple[str, int, int]:
+        response = self._call(
+            messages,
             stream=False,
             temperature=temperature,
             max_tokens=max_tokens,
         )
         content = response.choices[0].message.content
         return content, response.usage.prompt_tokens, response.usage.completion_tokens
-
