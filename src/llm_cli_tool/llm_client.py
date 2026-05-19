@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Generator
+from typing import Any, Generator
 
 from openai import OpenAI, RateLimitError
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
@@ -18,13 +18,26 @@ class LLMClient:
         stop=stop_after_attempt(5),
         wait=wait_exponential(multiplier=1, min=1, max=10),
     )
-    def _call(self, messages: list[dict], stream: bool, temperature: float, max_tokens: int):
+    def _call(
+        self,
+        messages: list[dict],
+        stream: bool,
+        temperature: float,
+        max_tokens: int,
+        response_format: dict[str, Any] | None = None,
+    ):
+        request_kwargs = {
+            "model": self.model,
+            "messages": messages,
+            "stream": stream,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+        }
+        if response_format is not None:
+            request_kwargs["response_format"] = response_format
+
         return self.client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-            stream=stream,
-            temperature=temperature,
-            max_tokens=max_tokens,
+            **request_kwargs,
         )
 
     def stream(self, prompt: str, temperature: float = 0.7, max_tokens: int = 2_000) -> Generator[str, None, None]:
@@ -50,11 +63,18 @@ class LLMClient:
             if chunk.choices[0].delta.content:
                 yield chunk.choices[0].delta.content
 
-    def complete(self, prompt: str, temperature: float = 0.7, max_tokens: int = 2_000) -> tuple[str, int, int]:
+    def complete(
+        self,
+        prompt: str,
+        temperature: float = 0.7,
+        max_tokens: int = 2_000,
+        response_format: dict[str, Any] | None = None,
+    ) -> tuple[str, int, int]:
         return self.complete_messages(
             [{"role": "user", "content": prompt}],
             temperature=temperature,
             max_tokens=max_tokens,
+            response_format=response_format,
         )
 
     def complete_messages(
@@ -62,12 +82,14 @@ class LLMClient:
         messages: list[dict],
         temperature: float = 0.7,
         max_tokens: int = 2_000,
+        response_format: dict[str, Any] | None = None,
     ) -> tuple[str, int, int]:
         response = self._call(
             messages,
             stream=False,
             temperature=temperature,
             max_tokens=max_tokens,
+            response_format=response_format,
         )
         content = response.choices[0].message.content
         return content, response.usage.prompt_tokens, response.usage.completion_tokens
