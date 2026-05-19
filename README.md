@@ -54,6 +54,12 @@ Get metrics as JSON:
 llm-cli --json-output "Explain RAG in one sentence"
 ```
 
+Show a weekly cost summary from the local usage database:
+
+```sh
+llm-cli --cost-report
+```
+
 Start an interactive chat session and keep previous turns in context:
 
 ```sh
@@ -66,6 +72,8 @@ llm-cli --chat
 ```
 
 You can also run the package directly with `python -m llm_cli_tool`.
+
+Usage events are logged automatically to a local SQLite database at `~/.llm-cli-tool/usage.sqlite3`.
 
 Deactivate the virtual environment when you are done:
 
