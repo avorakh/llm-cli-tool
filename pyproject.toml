@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llm-cli-tool"
+version = "0.1.0"
+description = "A CLI for streaming LLM responses with token and cost tracking."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "click",
+  "python-dotenv",
+  "openai",
+  "anthropic",
+  "tiktoken",
+  "tenacity",
+]
+
+[project.scripts]
+llm-cli = "llm_cli_tool.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+include = ["llm_cli_tool*"]
+where = ["src"]
