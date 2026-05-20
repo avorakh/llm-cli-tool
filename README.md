@@ -42,10 +42,22 @@ Disable streaming and get the full response at once:
 llm-cli --no-stream "List 3 LLM concepts"
 ```
 
+Request a structured JSON object from the model:
+
+```sh
+llm-cli --json-response --json-schema feature-extraction "Extract features from: price is key, reviews matter"
+```
+
 Get metrics as JSON:
 
 ```sh
 llm-cli --json-output "Explain RAG in one sentence"
+```
+
+Show a weekly cost summary from the local usage database:
+
+```sh
+llm-cli --cost-report
 ```
 
 Start an interactive chat session and keep previous turns in context:
@@ -60,6 +72,8 @@ llm-cli --chat
 ```
 
 You can also run the package directly with `python -m llm_cli_tool`.
+
+Usage events are logged automatically to a local SQLite database at `~/.llm-cli-tool/usage.sqlite3`.
 
 Deactivate the virtual environment when you are done:
 
