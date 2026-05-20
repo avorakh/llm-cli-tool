@@ -2,6 +2,16 @@
 
 The tool accepts a prompt as a CLI argument and streams the response back to your terminal in real-time, displaying token counts and cost at the end of each call.
 
+## Table Of Contents
+
+- [Setup](#setup)
+  - [macOS](#macos)
+  - [Linux](#linux)
+  - [Windows](#windows)
+    - [PowerShell](#powershell)
+    - [Command Prompt](#command-prompt)
+- [Run And Test](#run-and-test)
+
 ## Setup
 
 Create a virtual environment:
@@ -20,6 +30,58 @@ Install the project in editable mode:
 
 ```sh
 pip install -e .
+```
+
+Set your OpenAI API key before running the CLI.
+
+### macOS
+
+```sh
+export OPENAI_API_KEY="your_api_key_here"
+```
+
+To persist it across terminal sessions, add the same line to your shell profile such as `~/.zshrc`, then reload the shell:
+
+```sh
+source ~/.zshrc
+```
+
+### Linux
+
+```sh
+export OPENAI_API_KEY="your_api_key_here"
+```
+
+To persist it across terminal sessions, add the same line to your shell profile such as `~/.bashrc`, then reload the shell:
+
+```sh
+source ~/.bashrc
+```
+
+### Windows
+
+#### PowerShell
+
+```powershell
+$env:OPENAI_API_KEY="your_api_key_here"
+```
+
+To persist it for future PowerShell sessions:
+
+```powershell
+[System.Environment]::SetEnvironmentVariable("OPENAI_API_KEY", "your_api_key_here", "User")
+```
+
+#### Command Prompt
+
+```cmd
+set OPENAI_API_KEY=your_api_key_here
+```
+
+To persist it for future Command Prompt sessions:
+
+```cmd
+setx OPENAI_API_KEY "your_api_key_here"
 ```
 
 ## Run And Test
